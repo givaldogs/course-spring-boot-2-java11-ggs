@@ -2,12 +2,40 @@ package com.ggs.course.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+/**
+ * Temos que colocar nessa classe algumas anotacoes (Annotation) do JPA
+ * para instruir para o JPA como que ele vai converter os objetos para o
+ * modelo relacional.
+ * @author GivaldoGS
+ * Quando coloca o Annotation @Entity , na hora de importa , sempre importa o javax.persistence
+ * porque sempre vamos da preferencia para especificacao.
+ * Eh sempre bom fazer sua classe depender da especificacao, e nao da implementacao
+ * por isso que nao importa diretamente o HIPERNATE
+  */
+
+@Entity
 public class User implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Precisamos falar para o JPA qual desses campos eh a chave primaria da tabela
+	 * do banco de dados
+	 * no caso a chave eh o campo id, entao vamos colocar a Annotation @id antes do
+	 * private Long id.
+	 * como a chave eh uma chave numerica ela vai ser auto incrementavel no banco de dados.
+     * para dizer isso no JPA, colocar o Annotation @GeneratedValue
+     * @GeneratedValue(strategy = GenerationType.IDENTITY) -> ela da certo para muitos banco
+     * de dados.
+	 */
+	
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
