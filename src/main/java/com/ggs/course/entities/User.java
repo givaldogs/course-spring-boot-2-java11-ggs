@@ -1,47 +1,69 @@
 package com.ggs.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
- * Temos que colocar nessa classe algumas anotacoes (Annotation) do JPA
- * para instruir para o JPA como que ele vai converter os objetos para o
- * modelo relacional.
- * @author GivaldoGS
- * Quando coloca o Annotation @Entity , na hora de importa , sempre importa o javax.persistence
- * porque sempre vamos da preferencia para especificacao.
- * Eh sempre bom fazer sua classe depender da especificacao, e nao da implementacao
- * por isso que nao importa diretamente o HIPERNATE
-  */
+ * Temos que colocar nessa classe algumas anotacoes (Annotation) do JPA para
+ * instruir para o JPA como que ele vai converter os objetos para o modelo
+ * relacional.
+ * 
+ * @author GivaldoGS Quando coloca o Annotation @Entity , na hora de importa ,
+ *         sempre importa o javax.persistence porque sempre vamos da preferencia
+ *         para especificacao. Eh sempre bom fazer sua classe depender da
+ *         especificacao, e nao da implementacao por isso que nao importa
+ *         diretamente o HIPERNATE
+ *         anotation @Table server para dar o nome da tabela no banco de dados, no caso
+ *         tb_user
+ */
 
 @Entity
+@Table(name = "tb_order")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Precisamos falar para o JPA qual desses campos eh a chave primaria da tabela
-	 * do banco de dados
-	 * no caso a chave eh o campo id, entao vamos colocar a Annotation @id antes do
-	 * private Long id.
-	 * como a chave eh uma chave numerica ela vai ser auto incrementavel no banco de dados.
-     * para dizer isso no JPA, colocar o Annotation @GeneratedValue
-     * @GeneratedValue(strategy = GenerationType.IDENTITY) -> ela da certo para muitos banco
-     * de dados.
+	 * do banco de dados no caso a chave eh o campo id, entao vamos colocar a
+	 * Annotation @id antes do private Long id. como a chave eh uma chave numerica
+	 * ela vai ser auto incrementavel no banco de dados. para dizer isso no JPA,
+	 * colocar o Annotation @GeneratedValue
+	 * 
+	 * @GeneratedValue(strategy = GenerationType.IDENTITY) -> ela da certo para
+	 *                          muitos banco de dados.
 	 */
-	
-	@Id 
+
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
 	private String phone;
 	private String password;
+
+	/**
+	 * o nome da lista eh orders, como a lista de pedidos do usuario eh uma colecao
+	 * nos vamos instanciar => orders = new ArrayList<>()
+	 */
 	
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>();
+
+	/**
+	 * Como estamos usando FrameWorks eh obrigado criar um construtor vazio public
+	 * User() Por conveniencia (prof. Nelio Alves custuma colocar o construtor com
+	 * todos os atributos da classe (name, email phone, password)
+	 * 
+	 */
 	public User() {
 	}
 
@@ -94,6 +116,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,7 +145,5 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
-	}
+}

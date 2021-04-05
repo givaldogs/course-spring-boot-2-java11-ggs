@@ -20,7 +20,7 @@ import com.ggs.course.services.UserService;
  */
 @RequestMapping(value = "/users")
 /**
- * Para dar um nome para o meu recurso
+ * Para dar um nome para o meu recurso (value = "/users")
  * @author GivaldoGS
  *
  */
