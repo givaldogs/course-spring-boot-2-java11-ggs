@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Temos que colocar nessa classe algumas anotacoes (Annotation) do JPA para
  * instruir para o JPA como que ele vai converter os objetos para o modelo
@@ -53,8 +55,11 @@ public class User implements Serializable {
 	/**
 	 * o nome da lista eh orders, como a lista de pedidos do usuario eh uma colecao
 	 * nos vamos instanciar => orders = new ArrayList<>()
+	 * @JsonIgnore e para que nao fique em Loop, o Usuario(cliente) chama o pedido e o pedido
+	 * chama o Usuario, por causa do relacionamento Cliente x Pedidos (OneToMany e ManyToOne)
 	 */
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 

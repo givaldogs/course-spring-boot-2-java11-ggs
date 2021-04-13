@@ -11,31 +11,35 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
-	
+
 	/**
-	 * Agora temos que fazer as anotacoes do JPA, para dizer que essa classe vai ser uma
-	 * tabela no banco de dados. 
+	 * Agora temos que fazer as anotacoes do JPA, para dizer que essa classe vai ser
+	 * uma tabela no banco de dados.
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
-	
+
 	/**
-	 * a anotation @JoinColumn eh utilizada para dizer o nome da chave estrangeira no 
-	 * banco de dados
+	 * a anotation @JoinColumn eh utilizada para dizer o nome da chave estrangeira
+	 * no banco de dados
 	 */
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
-	
+
 	public Order() {
-		
+
 	}
 
 	public Order(Long id, Instant moment, User client) {
@@ -93,6 +97,5 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }
