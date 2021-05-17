@@ -1,0 +1,144 @@
+package com.ggs.course.entities;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = "tb_product")
+public class Product implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private String description;
+	private Double price;
+	private String imgUrl;
+	/**
+	 * vamos fazer a Associations (instantiate collections), nao vamos usar List<>,
+	 * vamos usar o SET<>, porque o SET<> O SET<> representa um conjunto, isto e'
+	 * para garantir que nao vamos ter um produto com mais de uma ocorrencia de uma
+	 * categoria. O mesmo produto nao pode ter a mesma categoria mais de uma vez.
+	 * Entao para garantir isso vamos usar o SET<>. ------ Nos ja intanciamos para
+	 * garantir para que a colecao(categories) nao comece nula, ela tem que comecar
+	 * vazia, porem instanciada (a instancia e' ( categories = new HashSet<>() ).
+	 * Nos usamos o HashSet<> ao inves do Set<>, porque o Set<> e' uma interface ele
+	 * nao pode ser instanciado , temos que usar uma classe correspondente a essa
+	 * interface. Da mesma forma que usamos o List<> e ArrayList, nos usamos o Set<>
+	 * e HashSet<>. O comando private Set<Category> categories = new HashSet<>() e
+	 * para associar o Product com Category Temos que ir na classe Category e fazer
+	 * tambem a associacao.
+	 */
+
+	/**
+	 *  quando usamos o annotation @Trasient, serve para que o JPA nao considere
+	 *  a colecao no tabela Product, (uso provisorio ate corrigir)
+	 */
+	@Transient
+	private Set<Category> categories = new HashSet<>();
+
+	public Product() {
+		
+	}
+	/**
+	 * na criacao de construtores com argumentos, nao coloca as colocoes em
+	 * construtor no caso e o this.categories = categories; O motivo e porque ja
+	 * estamos instanciando na linha de cima private Set<Category> categories = new
+	 * HashSet<>();
+	 * 
+	 */
+	public Product(Long id, String name, String description, Double price, String imgUrl, Set<Category> categories) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.imgUrl = imgUrl;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	/**
+	 * em colecoes nao usa o setCategories, apenas o get
+	 * 
+	 * @param categories
+	 */
+	// public void setCategories(Set<Category> categories) {
+	// this.categories = categories;
+	// }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+}
