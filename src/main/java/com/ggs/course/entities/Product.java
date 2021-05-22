@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product")
@@ -42,16 +45,20 @@ public class Product implements Serializable {
 	 */
 
 	/**
-	 *  quando usamos o annotation @Trasient, serve para que o JPA nao considere
-	 *  a colecao no tabela Product, (uso provisorio ate corrigir)
+	 * quando usamos o annotation @Trasient, serve para que o JPA nao considere a
+	 * colecao no tabela Product, (uso provisorio ate corrigir)
 	 */
 	@ManyToMany
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
+
 	public Product() {
-		
+
 	}
+
 	/**
 	 * na criacao de construtores com argumentos, nao coloca as colocoes em
 	 * construtor no caso e o this.categories = categories; O motivo e porque ja
@@ -116,9 +123,15 @@ public class Product implements Serializable {
 	 * 
 	 * @param categories
 	 */
-	// public void setCategories(Set<Category> categories) {
-	// this.categories = categories;
-	// }
+	 
+	@JsonIgnore
+	public Set<Order> getOrders() {
+		Set<Order> set = new HashSet<>();
+		for (OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+		return set;
+	}
 
 	@Override
 	public int hashCode() {
