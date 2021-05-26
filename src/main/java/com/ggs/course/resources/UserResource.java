@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,7 +100,7 @@ public class UserResource {
 	  * Para dizer que esse objeto -> "insert(User obj)" vai chegar no modo
 	  * json na hora de fazer a requisicao, e esse json vai descerializado para o objeto USER
 	  * do meu JAVA temos que colocar o anotation @RequestBody
-	  * 
+	  * URI uri = ServletUriComponentsBuilder, e para retorno para o codigo HTTP = 201
 	  */
 	 
 	 @PostMapping
@@ -109,4 +110,18 @@ public class UserResource {
 		 return ResponseEntity.created(uri).body(obj);
 	 }
 	 
+	 /**
+	  * para que a Long id seja reconhecida como uma variavel na URL, USAMOS O 
+	  * COMANDO @PathVariable 
+	  * 
+	  * ResponseEntity.noContent - vai retornar um resposta vazia com o codigo
+	  * HTTP 204
+	  */
+	 
+	 @DeleteMapping(value = "/{id}") 
+	 public ResponseEntity<Void> delete(@PathVariable Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+		 
+	 }
 }
