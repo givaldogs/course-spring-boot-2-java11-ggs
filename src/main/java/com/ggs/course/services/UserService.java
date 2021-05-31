@@ -70,4 +70,24 @@ public class UserService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+	
+	/**
+	 * 
+	 * getOne(id), vai instaciar o Usuario so que ele nao vai no banco de dados ainda
+	 * ele vai so' deixar o objeto monitorado pelo JPA para trabalhar com ele
+	 * e em seguida eu possa trabalhar com ele no banco de dados.
+	 * e' mais eficiente dessa forma
+	 * 
+	 */
+	public User update(Long id, User obj) {
+		User entity = repository.getOne(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+	}
 }
