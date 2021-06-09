@@ -63,6 +63,7 @@ public class UserService {
 		 * 
 		 * Optional existe desse o java 8
 		 */
+
 		Optional<User> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
@@ -95,7 +96,6 @@ public class UserService {
 			updateData(entity, obj);
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
-			e.printStackTrace();
 			throw new ResourceNotFoundException(id);
 		}
 	}
